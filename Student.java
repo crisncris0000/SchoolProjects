@@ -1,33 +1,38 @@
 import java.util.Arrays;
 
 public class Student extends Person{
-	protected static int numStudents;
-	protected int studentID;
-	protected Course coursesTaken[];
-	protected int numCoursesTaken;
-	protected boolean isGraduate;
-	protected String major;
+	private static int numStudents;
+	private int studentID;
+	private Course coursesTaken[];
+	private int numCoursesTaken;
+	private boolean isGraduate;
+	private String major;
 	
 	public Student() {
 		coursesTaken = new Course[100];
 		numCoursesTaken = 0;
 		isGraduate = false;
+		major = "undeclared";
+		studentID++;
 	}
 
 	public Student(boolean isGraduate){
 		this.isGraduate = isGraduate;
+		studentID++;
 	}
 
 	public Student(String major, boolean isGraduate){
 		this.major = major;
 		this.isGraduate = isGraduate;
+		studentID++;
 	}
 
 	public Student(String name, int birthYear, String major, boolean isGraduate){
-		super.name = name;
-		super.birthYear = birthYear;
+		super.setName(name);
+		super.setBirthYear(birthYear);
 		this.major = major;
 		this.isGraduate = isGraduate;
+		studentID++;
 	}
 
 	public boolean isGraduate(){
@@ -111,7 +116,7 @@ public class Student extends Person{
 		if(obj instanceof Faculty) {
 			Student student = (Student) obj;
 			if(super.equals(obj) == true) {
-				if(this.studentID == student.studentID && this.numCoursesTaken == student.numCoursesTaken && this.isGraduate == student.isGraduate) {
+				if(this.numCoursesTaken == student.numCoursesTaken && this.isGraduate == student.isGraduate && this.major == student.major) {
 					return true;
 				}
 			}
@@ -121,7 +126,14 @@ public class Student extends Person{
 
 	@Override
 	public String toString() {
-		String s = new String.format("Student: studentID: %04d | Major %20s | %14s | Number of Courses Taken: %3d | Courses Taken: %s", studentID, major, isGraduate, numCoursesTaken, getAllCoursesTakenAsString());
+		String s = String.format("Student: studentID: %04d | Major %20s | %14s | Number of Courses Taken: %3d | Courses Taken: %s", studentID, major, isGraduate, numCoursesTaken, getAllCoursesTakenAsString());
 		return super.toString() + s;
+	}
+	
+	@Override
+	public int compareTo(Person o) {
+		Student student = (Student) o;
+
+		return super.compareTo(o);
 	}
 }

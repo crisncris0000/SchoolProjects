@@ -1,0 +1,394 @@
+public class Doctor implements SeesPatients, Comparable<Doctor>{
+	
+	private static int numDoctors = 0;
+	private String name;
+	private int licenseNumber;
+	private Patient[] patients = new Patient[MAX_PATIENTS];
+	private int numberOfPatients;
+	
+	public Doctor() {}
+	public Doctor(String name) {
+		this.name = name;
+		licenseNumber = numDoctors++;
+	}
+	
+	public static int getNumDoctors() {
+		return numDoctors;
+	}
+	
+	public int getLicenseNumber() {
+		
+		return licenseNumber;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int getNumberOfPatients() {
+			
+		
+		return numberOfPatients;
+	}
+
+	@Override
+	public String getPatientsAsString() {
+		String string = "patients= ";
+		for(int i = 0; i < patients.length; i++) {
+			if(patients[i] == null) {
+				
+				break;
+			}
+			
+			string += patients[i] + ", ";
+			
+		}
+		
+		String modifiedString = string.substring(0, string.length() - 2);
+		
+		return modifiedString;
+	}
+	
+	@Override
+	public void addPatient(Patient patient) throws PatientException {
+		
+			if(patient == null) {
+				throw new NullPointerException();
+			}
+			for(int i = 0; i < patients.length; i++) {
+				if(patients[i] == null) {
+					numberOfPatients++;
+					patients[i] = patient;
+					break;	
+				
+				}
+				else if(i == patients.length - 1 && patients[i] != null){
+					throw new PatientException("Capacity reached, cant add anymore");
+				}
+				
+		}
+			
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Doctor) {
+			Doctor doctor = (Doctor) obj;
+			
+			if(name == doctor.name && numberOfPatients == doctor.numberOfPatients) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	@Override
+	public int compareTo(Doctor o) {
+	
+	if(o == null) {
+		throw new NullPointerException();
+	}
+		if(this.getNumberOfPatients() > o.getNumberOfPatients()) {
+			return 1;
+		}
+		else if(this.getNumberOfPatients() < o.getNumberOfPatients()) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
+			
+		
+		
+	}
+	
+
+	@Override
+	public Patient[] getPatients() {
+		if(patients == null) {
+			throw new NullPointerException();
+		}
+		if(patients.length < 0 || patients.length > 100) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		return patients;
+	}
+
+
+
+	@Override
+	public boolean isPatient(Patient patient) {
+		if(patient == null) {
+			throw new NullPointerException();
+		}
+		for(int i = 0; i < patients.length; i++) {
+			if(patients[i].equals(patient)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		String string = String.format("Doctor: name= %20s | license number= %06d |", name, licenseNumber);
+		return string;
+	}
+	
+	public void addDoctor() {
+		licenseNumber = numDoctors++;
+	}
+	
+}
+
+public class Patient {
+	private static int numPatients = 0;
+	private String name;
+	private int birthYear;
+	private int patientNumber;
+	private String ailment;
+	
+	public Patient(String name, int birthYear, String ailment){
+		patientNumber = ++numPatients;
+		this.name = name;
+		if(isValid(birthYear))
+		{
+			this.birthYear  = birthYear;
+		}
+		else{this.birthYear  = 0;}
+		this.ailment = ailment;
+	}
+	
+	private boolean isValid(int by) {
+		if(by >=0 ){
+			return true;
+		}
+		return false;
+	}
+
+
+	public static int getNumPatients() {
+		return numPatients;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getBirthYear() {
+		return birthYear;
+	}
+
+	public int getPatientNumber() {
+		return patientNumber;
+	}
+
+	public String getAilment() {
+		return ailment;
+	}
+
+
+	@Override
+	public String toString() {
+		return String.format("Patient [name= %20s | birthYear= %04d | patient number= %06d | ailment= %20s\n", name, birthYear, patientNumber, ailment
+);
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Patient){
+			Patient otherP = (Patient)o;
+			if(this.name.equals(otherP.name)){
+					if(this.birthYear == otherP.birthYear){
+							if(this.ailment.equals(otherP.ailment)){
+								return true;
+							}
+						
+					}
+			}
+		}
+		return false;
+	}
+	
+	
+
+}
+
+public interface SeesPatients {
+	
+	public void addPatient(Patient patient) throws PatientException;
+	
+	public Patient[] getPatients();
+	
+	public String getPatientsAsString();
+	
+	public boolean isPatient(Patient patient);
+	
+	public static final int MAX_PATIENTS = 100;
+	
+	
+}
+
+@SuppressWarnings("serial")
+public class PatientException extends Exception{
+
+	public PatientException(){
+		
+	}
+	
+	public PatientException(String s) {
+		super(s);
+	}
+	
+}
+
+public class Pediatrician extends Doctor{
+	private boolean hasPrivatePractice = false;
+	private String hospitalName = "";
+
+	
+	public Pediatrician(String name){
+		super.setName(name);
+		addDoctor();
+	}
+	
+	public Pediatrician(String name, boolean hasPrivatePracice, String hospitalName) {
+		super.setName(name);
+		this.hasPrivatePractice = hasPrivatePracice;
+		this.hospitalName = hospitalName;
+		addDoctor();
+	}
+	
+	public boolean hasPrivatePractice() {
+		return hasPrivatePractice;
+	}
+	
+	public String getHospitalName() {
+		return hospitalName;
+	}
+	
+	public void setHospitalName(String hospitalName) {
+		this.hospitalName = hospitalName;
+	}
+	
+	@Override
+	public void addPatient(Patient patient) throws PatientException {
+	
+			for(int i = 0; i < super.getPatients().length; i++) {
+				
+				if(2021 - patient.getBirthYear() < 18) {
+					if(i == getPatients().length - 1 && getPatients()[i] != null){
+						throw new PatientException("Capacity reached, cant add anymore");
+					}
+					
+					if(super.getPatients()[i] == null) {
+						super.getPatients()[i] = patient;
+						break;
+					}
+				}
+				else {
+					throw new PatientException("Age must be less than 18 years old!");
+				}
+			}
+			
+		}
+	@Override
+	public String toString() {
+		String string = String.format("\nPediatrician: %s | hospital name =%15s", super.getName(), hospitalName);
+		return super.toString() + string;
+	}	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Pediatrician) {
+			Pediatrician pediatrician = (Pediatrician) obj;
+			if(hasPrivatePractice == pediatrician.hasPrivatePractice && hospitalName == pediatrician.hospitalName) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
+
+}
+
+public class Gerontologist extends Doctor{
+	private boolean performsHouseCalls = true;
+	private double visitFee = 0.0;
+	
+	
+	public Gerontologist(String name){
+		super.setName(name);
+		addDoctor();
+	}
+	
+	public Gerontologist(String name, boolean performHouseCalls, double visitFee) {
+		super.setName(name);
+		this.performsHouseCalls = performHouseCalls;
+		this.visitFee = visitFee;
+		addDoctor();
+	}
+	
+	public boolean performsHouseCalls() {
+		return performsHouseCalls;
+	}
+	
+	public double getVisitFee() {
+		return visitFee;
+	}
+	
+	public void setPerformsHouseCalls(boolean performHouseCalls) {
+		this.performsHouseCalls = performHouseCalls;
+	}
+	
+	public void setVisitFee(double visitFee) {
+		if(visitFee < 0) {
+			visitFee = 0.0;
+		}
+		this.visitFee = visitFee;
+	}
+	
+	public void addPatient(Patient patient) throws PatientException{
+		
+		for(int i = 0; i < super.getPatients().length; i++) {
+			
+			if(2020 - patient.getBirthYear() > 65) {
+				if(i == getPatients().length - 1 && getPatients()[i] != null){
+					throw new PatientException("Capacity reached, cant add anymore");
+				}
+				
+				if(super.getPatients()[i] == null) {
+					super.getPatients()[i] = patient;
+					break;
+				}
+			}
+			else {
+				throw new PatientException("Age must be older than 65 years old!");
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		String string = String.format("\nGerontologist: %s | visit fee=%02.2f", this.getName(), visitFee);
+		return super.toString() + string;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Gerontologist) {
+			Gerontologist gerontologist = (Gerontologist) obj;
+			if(performsHouseCalls == gerontologist.performsHouseCalls && ((visitFee - gerontologist.visitFee) >= 0 && Math.abs(visitFee - gerontologist.visitFee) <= .05)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+}

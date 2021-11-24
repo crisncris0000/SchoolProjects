@@ -1,0 +1,97 @@
+import javax.swing.*;
+import java.util.Random;
+
+public class Grid extends JFrame {
+    private int[][] countGrid;
+    private int numRows;
+    private int numColumns;
+    private int numBombs;
+    private boolean[][] bombGrid;
+   public Grid(){
+    numRows = 10;
+    numColumns = 10;
+    numBombs = 25;
+
+    createBombGrid();
+
+    }
+
+    public Grid(int rows, int columns){
+       numRows = rows;
+       numColumns = columns;
+
+       createBombGrid();
+    }
+
+    public Grid(int rows, int columns, int bombs){
+        numRows = rows;
+        numColumns = columns;
+        numBombs = bombs;
+
+        createBombGrid();
+    }
+
+    public int getNumRows(){
+       return numRows;
+    }
+
+    public int getNumColumns(){
+       return numColumns;
+    }
+
+    public int getNumBombs(){
+       return numBombs;
+    }
+
+    public boolean[][] getBombGrid(){
+       return bombGrid;
+    }
+
+    public int[][] getCountGrid(){
+       return null;
+    }
+
+    public boolean isBombAtLocation(int row, int column){
+       if(bombGrid[row][column] == true) {
+           return true;
+       }
+       return false;
+    }
+
+    public int getCountAtLocation(int row, int column){
+       return 1;
+    }
+
+    private void createBombGrid(){
+
+        Random rnd = new Random();
+        int counter = 0;
+        bombGrid = new boolean[numRows][numColumns];
+        for(int i = 0; i < bombGrid.length; i++) {
+            for (int j = 0; j < bombGrid[i].length; j++) {
+                bombGrid[i][j] = false;
+            }
+        }
+
+        while(counter < numBombs){
+            int coord1 = rnd.nextInt(numRows);
+            int coord2 = rnd.nextInt(numColumns);
+            if(bombGrid[coord1][coord2] == false) {
+                bombGrid[coord1][coord2] = true;
+                counter++;
+            }
+        }
+
+
+        for(int i = 0; i < bombGrid.length; i++){
+            for(int j = 0; j < bombGrid[i].length; j++){
+                System.out.print(bombGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private void createCountGrid(){
+
+    }
+}

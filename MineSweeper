@@ -7,20 +7,21 @@ public class Grid extends JFrame {
     private int numColumns;
     private int numBombs;
     private boolean[][] bombGrid;
-   public Grid(){
-    numRows = 10;
-    numColumns = 10;
-    numBombs = 25;
+    public Grid(){
+        numRows = 10;
+        numColumns = 10;
+        numBombs = 25;
 
-    createBombGrid();
-
+        createBombGrid();
+        createCountGrid();
     }
 
     public Grid(int rows, int columns){
-       numRows = rows;
-       numColumns = columns;
+        numRows = rows;
+        numColumns = columns;
 
-       createBombGrid();
+        createBombGrid();
+        createCountGrid();
     }
 
     public Grid(int rows, int columns, int bombs){
@@ -29,37 +30,38 @@ public class Grid extends JFrame {
         numBombs = bombs;
 
         createBombGrid();
+        createCountGrid();
     }
 
     public int getNumRows(){
-       return numRows;
+        return numRows;
     }
 
     public int getNumColumns(){
-       return numColumns;
+        return numColumns;
     }
 
     public int getNumBombs(){
-       return numBombs;
+        return numBombs;
     }
 
     public boolean[][] getBombGrid(){
-       return bombGrid;
+        return bombGrid;
     }
 
     public int[][] getCountGrid(){
-       return null;
+        return null;
     }
 
     public boolean isBombAtLocation(int row, int column){
-       if(bombGrid[row][column] == true) {
-           return true;
-       }
-       return false;
+        if(bombGrid[row][column] == true) {
+            return true;
+        }
+        return false;
     }
 
     public int getCountAtLocation(int row, int column){
-       return 1;
+        return 1;
     }
 
     private void createBombGrid(){
@@ -91,7 +93,82 @@ public class Grid extends JFrame {
         }
     }
 
-    private void createCountGrid(){
 
+    private void createCountGrid(){
+        countGrid = new int[numRows][numColumns];
+
+        for(int i = 0; i < countGrid.length; i++) {
+            for (int j = 0; j < countGrid[i].length; j++) {
+                countGrid[i][j] = 0;
+                if (bombGrid[i][j] == true) {
+
+                }
+            }
+        }
+
+
+
+
+        for(int rows = 0; rows < bombGrid.length; rows++) {
+            for (int columns = 0; columns < countGrid[rows].length; columns++) {
+
+                if(rows + 1 < bombGrid.length) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows + 1][columns] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(rows - 1 >= 0) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows - 1][columns] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(rows + 1 < bombGrid.length && columns + 1 < bombGrid.length) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows + 1][columns + 1] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(rows - 1 >= 0 && columns - 1 >= 0) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows - 1][columns - 1] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(columns + 1 < bombGrid.length) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows][columns + 1] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(columns - 1 >= 0) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows][columns - 1] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(rows + 1 < bombGrid.length && columns - 1 >= 0) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows + 1][columns - 1] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                if(rows - 1 >= 0 && columns + 1 < bombGrid.length) {
+                    if (bombGrid[rows][columns] == false && bombGrid[rows - 1][columns + 1] == true) {
+                        countGrid[rows][columns]++;
+                    }
+                }
+
+                System.out.print(countGrid[rows][columns] + " ");
+            }
+            System.out.println();
+        }
+
+    }
+
+
+    public void GUIBuilder(){
+        
     }
 }

@@ -15,15 +15,33 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+
 public class Minesweeper implements ActionListener{
 	JOptionPane optionPane;
 	JFrame myFrame;
-	Grid grid = new Grid();
+	Grid grid = new Grid(3, 3, 1);
 	JButton [][]buttons;
 	int[][] countGrid;
 	boolean[][] bombGrid;
 	int cellsLeft = grid.getNumRows() * grid.getNumColumns() - grid.getNumBombs();
 	
+	String winOrLose = "";
 	
 	public static void main(String[] args) {
 		Minesweeper mineSweeper = new Minesweeper();
@@ -84,7 +102,6 @@ public class Minesweeper implements ActionListener{
 	        for(int i = 0; i < grid.getCountGrid().length; i++) {
 	        	for(int j = 0; j < grid.getCountGrid()[i].length; j++) {
 	        		buttons[i][j] = new JButton();
-	        		buttons[i][j].setBackground(Color.gray);
 	        		myFrame.add(buttons[i][j]);
 	        		buttons[i][j].addActionListener(this);     		
 	        		buttons[i][j].setBackground(new Color(34, 139, 34));
@@ -116,8 +133,8 @@ public class Minesweeper implements ActionListener{
 					if(bombGrid[i][j] == true) {
 						System.out.println("You lost");
 						disableGame();
-						myFrame.dispose();
-						resetGame();
+						winOrLose = "You lost!";
+						resetGame(winOrLose);
 						
 					}
 					
@@ -126,7 +143,8 @@ public class Minesweeper implements ActionListener{
 						System.out.println("Cells left: " + cellsLeft);
 						if(cellsLeft == 0) {
 							disableGame();
-							System.out.println("You win");
+							winOrLose = "You won congrates!";
+							resetGame(winOrLose);
 						}
 					}
 					
@@ -159,9 +177,10 @@ public class Minesweeper implements ActionListener{
 	}
 	
 	
-	public void resetGame() {
-		int num = optionPane.showConfirmDialog(null, "Would you like to play again?", "Play again", JOptionPane.YES_NO_CANCEL_OPTION);
+	public void resetGame(String s) {
+		int num = optionPane.showConfirmDialog(null, s +" Would you like to play again?", "Play again", JOptionPane.YES_NO_CANCEL_OPTION);
 		if(num == 0) {
+			myFrame.dispose();
 			grid = new Grid(10,10, 25);
 			BoardBuilder();
 		}
@@ -173,7 +192,7 @@ public class Minesweeper implements ActionListener{
 		}
 		
 		
-		System.out.println(num);
+		
 	}
 	
 
@@ -187,6 +206,7 @@ public class Minesweeper implements ActionListener{
 
 
 }
+
 
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////

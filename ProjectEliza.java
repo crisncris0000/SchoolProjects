@@ -21,7 +21,7 @@ public class ProjectEliza {
 
 			
 		// https://youtu.be/o0HQPSBiRQs //
-		//https://youtu.be/o0HQPSBiRQs //
+		// YouTube video link above ^^ !
 
 		while(UseAgain = true) { //While loop
 			String arr[] = userInput.split(" ", 2);

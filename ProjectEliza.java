@@ -76,4 +76,59 @@ public class ProjectEliza {
 		
 	}
 	
+}
+
+
+import java.util.Random;
+public class PromptBank {
+	String [] questions;
+	String [] statements;
+	
+	public PromptBank(){
+		questions = new String[4]; 
+		statements = new String[4];
+		
 	}
+
+	public void populateStatementsArray(String firstWord, String secondWord){
+		statements[0] = "Tell me more about " + firstWord + " and " + secondWord;
+		statements[1] = firstWord + " seems important to you, so does " + secondWord +". Please tell me more.";
+		statements[2] = firstWord + " and " + secondWord +" seem to be on your mind. Let's talk about it.";
+		statements[3] =	"WOW! That is so interesting that you said " + firstWord + " Can you please tell me more about " + secondWord;
+	}
+	public void populateQuestionsArray(String firstWord, String secondWord){
+		questions[0] = "Is there anything else about "+ firstWord + " and "+ secondWord + "?";
+		questions[1] = "Does " + firstWord + " bother you? How about " + secondWord +"?";
+		questions[2] = "Are " + firstWord + " and " + secondWord + " things you think about often?";
+		questions[3] = "How does it make you feel when I mention " + firstWord + " or How about " + secondWord;
+		
+		
+		
+	}
+	
+	public String getRandomStatementTrunk(){
+		Random rndm = new Random();
+		
+		
+		
+		return statements[rndm.nextInt(3)];
+		
+		
+	}
+	
+	
+public String getRandomQuestionTrunk(){
+		
+		Random rndm = new Random();
+	
+		return questions[rndm.nextInt(3)];
+		
+}
+
+public String getExcited() {
+	
+	return statements[3];
+}
+	
+	
+}
